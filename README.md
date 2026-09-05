@@ -22,9 +22,7 @@ Anthropic のブログ「How Claude Code works in large codebases」と、Claude
 
 ## 導入
 
-現在このリポジトリは private のため、下記のコマンドはリポジトリの公開後にのみ有効です。手元で試すには、次の「開発中の版を試す」の手順を使ってください。
-
-Claude Code のセッション内で次を実行します（公開後）。
+Claude Code のセッション内で次を実行します。
 
 ```
 /plugin marketplace add nogataka/cc-harness-kit
