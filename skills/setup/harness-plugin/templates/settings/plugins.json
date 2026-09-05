@@ -1,0 +1,14 @@
+{
+  "extraKnownMarketplaces": {
+    "<社内マーケットプレイス名>": {
+      "source": {
+        "source": "github",
+        "repo": "<組織>/<プラグインリポ>"
+      }
+    }
+  },
+  "enabledPlugins": {
+    "typescript-lsp@claude-plugins-official": true,
+    "<プラグイン名>@<社内マーケットプレイス名>": true
+  }
+}

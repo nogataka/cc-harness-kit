@@ -1,0 +1,155 @@
+deny	git push --force origin main
+deny	git push --force-with-lease origin main
+deny	git push --force-with-lease=main origin main
+deny	git push -f origin main
+deny	git push -uf origin main
+deny	git push -fu origin main
+deny	git push origin main -f
+deny	git push origin +refs/heads/main
+deny	git -C /repo push --force origin main
+deny	git -c user.name=x push --force origin main
+deny	git --git-dir=/r/.git push --force origin main
+deny	cd /repo && git push --force origin main
+deny	git push origin +main
+deny	git push origin +HEAD:main
+deny	git push --mirror origin
+deny	git branch -D old-branch
+deny	git reset --hard
+deny	git reset --hard HEAD~1
+deny	git clean -fd
+deny	git clean -xdf
+deny	git -C /repo reset --hard HEAD~1
+deny	git -C /repo clean -fd
+deny	git clean --force -d
+deny	git clean -x -f
+deny	git branch --delete --force old-branch
+deny	terraform apply
+deny	terraform destroy
+deny	tofu apply
+deny	tofu destroy
+deny	kubectl apply -f deploy.yaml --context prod-cluster
+deny	kubectl delete pod x -n prod
+deny	rm -rf /tmp/x
+deny	rm -fr /tmp/x
+deny	rm -Rf x
+deny	rm -fR x
+deny	rm --force -r x
+deny	rm -r --force x
+deny	rm -i -rf somedir
+deny	rm -rf --no-preserve-root /
+deny	sudo rm -rf /
+deny	env FOO=1 rm -rf x
+deny	time rm -rf x
+deny	nohup rm -rf x
+deny	command rm -rf x
+deny	\rm -rf x
+deny	bash -c "rm -rf x"
+deny	bash -c 'rm -rf x'
+deny	ssh host "rm -rf /var/lib/foo"
+deny	(rm -rf /tmp/x)
+deny	$(rm -rf /tmp/x)
+deny	`rm -rf /tmp/x`
+deny	xargs rm -rf < filelist
+deny	find . -exec rm -rf {} +
+deny	ls; rm -rf x
+deny	ls && rm -rf x
+deny	echo "note: never run rm -rf on prod"
+deny	psql -c "DROP TABLE foo"
+deny	psql -c "drop table foo"
+deny	psql -c "Drop Table foo"
+deny	psql -c "truncate users"
+deny	mysql -e "drop database app"
+deny	docker exec -i db psql -c "DROP TABLE t"
+deny	psql -c "DELETE FROM users"
+#	WHERE 付きの正当な削除も止まるのは意図的（TRUNCATE と等価な文へ書き換える自己迂回を防ぐため）
+deny	psql "$DATABASE_URL" -c "DELETE FROM sessions WHERE expires_at < now()"
+deny	psql -c "DROP SCHEMA app CASCADE"
+deny	psql -c "DROP INDEX idx_users"
+deny	echo start<NL>rm -rf ./build
+deny	cd /tmp<NL>ls<NL>rm -rf ./build
+deny	cat <<EOF > s.sh<NL>rm -rf /data<NL>EOF
+deny	psql <<'SQL'<NL>DROP TABLE users;<NL>SQL
+deny	rm<TAB>-rf /tmp/x
+pass	git push origin main
+pass	git status
+pass	git commit -m "ready to push"
+pass	git reset --soft
+pass	git branch -d old-branch
+pass	git clean -n
+pass	git log --format=%H
+pass	git push origin hotfix/foo
+pass	git push --tags
+pass	git push -u origin main
+pass	git push --set-upstream origin main
+pass	git push origin v1.2.3
+pass	git push origin HEAD:main
+pass	git push && echo "+1 done"
+pass	git push origin feature-fix
+pass	git push origin release-final
+pass	rm -f singlefile.txt
+pass	rm -r somedir
+pass	echo "some-rm -rf-file.txt"
+pass	npm run format
+pass	./scripts/rm-cache.sh -rf
+pass	git rm -r --cached x
+pass	brm -rf x
+pass	echo "confirm -rf"
+#	docker-rm -rf x は既知の許容トレードオフ（rm 境界がハイフン区切りの独自コマンド名を rm と誤認する。code-review-r2/r3 で許容済み）
+deny	docker-rm -rf x
+pass	grep -rn "TRUNCATE " ./docs
+pass	grep -rn "drop table" ./docs
+pass	psql -c "SELECT * FROM users"
+pass	psql -c "INSERT INTO drop_log VALUES (1)"
+pass	echo "we should never drop table users"
+pass	echo "$(id)" > /tmp/output
+pass	echo hi<NL>touch /tmp/marker
+pass	echo $HOME $PATH ${IFS}
+#	git checkout -- . は未コミット変更の全消しだが対象外（宣言済みルールに含まれない）
+pass	git checkout -- .
+#	git checkout . も同様に対象外
+pass	git checkout .
+#	git restore . も同様に対象外
+pass	git restore .
+pass	git restore --staged --worktree .
+#	git stash clear/drop はスタッシュの消失だが対象外
+pass	git stash clear
+pass	git stash drop
+pass	git worktree remove --force wt1
+pass	git filter-branch --force --all
+#	ブランチ削除系の push は履歴書き換えではないため対象外
+pass	git push --delete origin oldbranch
+pass	git push origin :oldbranch
+#	find -delete は rm トークンを含まないため対象外
+pass	find . -name '*.py' -delete
+#	truncate コマンド（ファイル切り詰め）は DB クライアントの TRUNCATE と別物のため対象外
+pass	truncate -s 0 important.log
+pass	echo hi > important.log
+pass	shred -u secrets.txt
+pass	dd if=/dev/zero of=/dev/diskN
+#	dropdb/redis-cli/mongosh/prisma は宣言済み DB クライアント一覧に無いため対象外
+pass	dropdb mydb
+pass	redis-cli FLUSHALL
+pass	mongosh --eval "db.users.drop()"
+pass	npx prisma migrate reset --force
+#	コンテナ・クラウドの削除系はこのフックの宣言済み対象外（対象リポで追加を検討）
+pass	docker system prune -af --volumes
+#	docker volume rm は rm トークンはあるが force/recursive フラグが無いため対象外
+pass	docker volume rm myvolume
+#	helm/aws/gh/npm は宣言済みパターンの対象外（terraform/tofu/kubectl のみ本番反映として検出）
+pass	helm uninstall api -n prod
+#	aws s3 rm --recursive は rm トークンはあるが --force 相当が無いため対象外
+pass	aws s3 rm s3://bucket/ --recursive
+pass	aws s3 rb s3://bucket --force
+pass	gh repo delete owner/repo --yes
+pass	npm unpublish --force
+#	prod を含まない kubectl delete は対象外（本番判定は文字列一致のため）
+pass	kubectl delete ns staging
+#	外部 SQL ファイル経由の DROP は原理的に検出不能なため対象外
+pass	psql -f migrations/drop_all.sql
+#	tier3 の \n/\t 復元順序バグ（code-review 4巡目・重大）の回帰テスト。ここでの \n は
+#	<NL> マーカーではなく文字としてのバックスラッシュ+n（2文字）で、TSV 上そのまま2文字として
+#	保持されることを to_json_command() の修正で確認する
+deny	git push -o "release notes: fix\nbug" --force origin main
+deny	printf 'a\nb' && rm -rf ./x
+pass	printf 'a\nb'
+pass	echo "line1\nline2"

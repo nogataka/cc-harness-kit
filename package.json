@@ -1,0 +1,22 @@
+{
+  "name": "cc-harness-kit",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Claude Code のハーネス7層を既存リポジトリに構築順で組み立てるスキル集",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nogataka/cc-harness-kit"
+  },
+  "license": "MIT",
+  "scripts": {
+    "changeset": "changeset",
+    "version": "changeset version && node scripts/sync-plugin-version.mjs",
+    "check-plugin-version": "node scripts/sync-plugin-version.mjs --check",
+    "validate": "bash scripts/validate.sh",
+    "test": "bash tests/run.sh"
+  },
+  "devDependencies": {
+    "@changesets/changelog-github": "^0.7.0",
+    "@changesets/cli": "^2.30.0"
+  }
+}

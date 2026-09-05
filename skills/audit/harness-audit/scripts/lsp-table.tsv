@@ -1,0 +1,14 @@
+# 言語	拡張子（カンマ区切りの find -name パターン）	プラグイン	必要なバイナリ
+# harness-audit.sh と skills/setup/harness-lsp/SKILL.md の対応表の正本です。
+# 両者が食い違わないよう、変更時は scripts/validate.sh の「LSP 対応表」チェックで整合を確認してください。
+TypeScript/JavaScript	*.ts,*.tsx,*.js,*.jsx	typescript-lsp	typescript-language-server
+Python	*.py	pyright-lsp	pyright-langserver
+Go	*.go	gopls-lsp	gopls
+Rust	*.rs	rust-analyzer-lsp	rust-analyzer
+Java	*.java	jdtls-lsp	jdtls
+Kotlin	*.kt,*.kts	kotlin-lsp	kotlin-language-server
+PHP	*.php	php-lsp	intelephense
+C/C++	*.c,*.cc,*.cpp,*.h,*.hpp	clangd-lsp	clangd
+C#	*.cs	csharp-lsp	csharp-ls
+Swift	*.swift	swift-lsp	sourcekit-lsp
+Lua	*.lua	lua-lsp	lua-language-server

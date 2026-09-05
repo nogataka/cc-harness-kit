@@ -1,0 +1,30 @@
+{
+  "name": "cc-harness-kit",
+  "version": "0.1.0",
+  "description": "Claude Code のハーネス（CLAUDE.md、フック、スキル、プラグイン、LSP、MCP、サブエージェント）を既存リポジトリに構築順で組み立てるスキル集。監査、提案、承認、書込の順で安全に適用します。",
+  "author": {
+    "name": "nogataka",
+    "url": "https://github.com/nogataka"
+  },
+  "repository": "https://github.com/nogataka/cc-harness-kit",
+  "license": "MIT",
+  "keywords": [
+    "claude-code",
+    "harness",
+    "claude-md",
+    "hooks",
+    "lsp",
+    "large-codebase"
+  ],
+  "skills": [
+    "./skills/audit/harness-audit",
+    "./skills/setup/harness-claudemd",
+    "./skills/setup/harness-exclusions",
+    "./skills/setup/harness-hooks",
+    "./skills/setup/harness-init",
+    "./skills/setup/harness-lsp",
+    "./skills/setup/harness-ownership",
+    "./skills/setup/harness-plugin",
+    "./skills/setup/harness-skills"
+  ]
+}
