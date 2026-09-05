@@ -1,6 +1,6 @@
 {
   "name": "cc-harness-kit",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": true,
   "description": "Claude Code のハーネス7層を既存リポジトリに構築順で組み立てるスキル集",
   "repository": {
