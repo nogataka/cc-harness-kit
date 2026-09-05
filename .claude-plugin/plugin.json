@@ -1,6 +1,6 @@
 {
   "name": "cc-harness-kit",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Claude Code のハーネス（CLAUDE.md、フック、スキル、プラグイン、LSP、MCP、サブエージェント）を既存リポジトリに構築順で組み立てるスキル集。監査、提案、承認、書込の順で安全に適用します。",
   "author": {
     "name": "nogataka",
